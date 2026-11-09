@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e1422">
+  <title>KunciLab · Simulator deadlock</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.mjs"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <div class="eyebrow">LAB CONCURRENCY / 01</div>
+        <h1>KunciLab<span>.</span></h1>
+        <p>Atur giliran thread, baca siklus tunggu, dan coba pulihkan deadlock.</p>
+      </div>
+      <div class="scenario-tools">
+        <label for="preset">Skenario bawaan</label>
+        <div class="row">
+          <select id="preset">
+            <option value="silang">Urutan terbalik</option>
+            <option value="searah">Urutan konsisten</option>
+            <option value="cincin">Siklus tiga thread</option>
+          </select>
+          <button id="load">Muat preset</button>
+        </div>
+      </div>
+    </header>
+    <section class="toolbar" aria-labelledby="scenario-title">
+      <div>
+        <div class="eyebrow">SESI AKTIF</div>
+        <h2 id="scenario-title"></h2>
+      </div>
+      <div class="row controls">
+        <button id="run" class="primary">Jalankan otomatis</button>
+        <button id="undo">Mundur</button>
+        <button id="reset">Mulai ulang</button>
+      </div>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+    <div class="grid">
+      <section class="panel" aria-labelledby="threads-title">
+        <div class="panel-head">
+          <div class="eyebrow">01 / JADWAL</div>
+          <h2 id="threads-title">Thread</h2>
+          <p>Pilih langkah berikutnya atau batalkan thread dalam siklus.</p>
+        </div>
+        <div id="threads" class="threads"></div>
+      </section>
+      <section class="panel" aria-labelledby="graph-title">
+        <div class="panel-head">
+          <div class="eyebrow">02 / RELASI</div>
+          <h2 id="graph-title">Graf tunggu</h2>
+          <p>Panah mengarah dari thread yang menunggu ke pemilik mutex.</p>
+        </div>
+        <svg id="graph" viewBox="0 0 480 330" role="img" aria-label="Graf tunggu thread"></svg>
+        <ul id="edges" class="edges"></ul>
+      </section>
+      <section class="panel" aria-labelledby="locks-title">
+        <div class="panel-head">
+          <div class="eyebrow">03 / SUMBER DAYA</div>
+          <h2 id="locks-title">Mutex dan antrean</h2>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Mutex</th><th>Pemilik</th><th>Antrean FIFO</th></tr></thead>
+          <tbody id="locks"></tbody>
+        </table></div>
+      </section>
+      <section class="panel" aria-labelledby="timeline-title">
+        <div class="panel-head">
+          <div class="eyebrow">04 / RIWAYAT</div>
+          <h2 id="timeline-title">Jejak langkah</h2>
+        </div>
+        <ol id="timeline" class="timeline"></ol>
+        <p id="empty-log" class="muted">Belum ada langkah.</p>
+      </section>
+    </div>
+    <details class="panel tools">
+      <summary>Skenario JSON dan replay</summary>
+      <p>Edit skenario untuk memulai simulasi baru. Jejak JSON menyimpan skenario dan urutan aksi untuk diputar ulang.</p>
+      <label for="editor">Skenario</label>
+      <textarea id="editor" rows="12" spellcheck="false" maxlength="65536"></textarea>
+      <div class="row controls">
+        <button id="apply" class="primary">Terapkan skenario</button>
+        <button id="download">Unduh jejak JSON</button>
+        <label for="upload" class="file-label">Muat jejak JSON</label>
+        <input id="upload" type="file" accept=".json,application/json">
+      </div>
+    </details>
+  </main>
+</body>
+</html>

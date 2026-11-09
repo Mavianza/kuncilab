@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "scenario": {
+    "name": "Dua mutex, urutan terbalik",
+    "locks": [
+      "A",
+      "B"
+    ],
+    "threads": [
+      {
+        "id": "T1",
+        "steps": [
+          {
+            "op": "lock",
+            "lock": "A"
+          },
+          {
+            "op": "lock",
+            "lock": "B"
+          },
+          {
+            "op": "work",
+            "label": "Perbarui data"
+          },
+          {
+            "op": "unlock",
+            "lock": "B"
+          },
+          {
+            "op": "unlock",
+            "lock": "A"
+          }
+        ]
+      },
+      {
+        "id": "T2",
+        "steps": [
+          {
+            "op": "lock",
+            "lock": "B"
+          },
+          {
+            "op": "lock",
+            "lock": "A"
+          },
+          {
+            "op": "work",
+            "label": "Baca data"
+          },
+          {
+            "op": "unlock",
+            "lock": "A"
+          },
+          {
+            "op": "unlock",
+            "lock": "B"
+          }
+        ]
+      }
+    ]
+  },
+  "commands": [
+    {
+      "type": "step",
+      "thread": "T1"
+    },
+    {
+      "type": "step",
+      "thread": "T2"
+    },
+    {
+      "type": "step",
+      "thread": "T1"
+    },
+    {
+      "type": "step",
+      "thread": "T2"
+    }
+  ]
+}
